@@ -1,7 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-const dist=path.resolve('dist');await fs.mkdir(dist,{recursive:true});
-await fs.cp('src',dist,{recursive:true});
+import {fileURLToPath} from 'node:url';
+const projectRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const dist=path.resolve('dist');
+if(dist!==path.join(projectRoot,'dist'))throw Error('Run the build from the project directory.');
+await fs.rm(dist,{recursive:true,force:true});await fs.mkdir(dist,{recursive:true});
+await fs.cp('src',dist,{recursive:true,filter:source=>!source.split(path.sep).includes('__pycache__')&&!source.endsWith('.pyc')});
 await fs.mkdir(path.join(dist,'runtime'),{recursive:true});
 for(const file of ['pyodide.js','pyodide.asm.js','pyodide.asm.wasm','python_stdlib.zip','pyodide-lock.json']){
  await fs.copyFile(path.join('node_modules/pyodide',file),path.join(dist,'runtime',file));

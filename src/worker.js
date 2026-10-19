@@ -14,8 +14,10 @@ async function ready(){
 }
 self.onmessage=async event=>{
  const {id,type,index,buffer}=event.data;
+ let phase='runtime';
  try{
   const py=await ready();
+  phase=type==='analyze'?'analyze':type==='preview'?'preview':'export';
   if(type==='analyze'){
    const bytes=new Uint8Array(buffer);
    if(bytes.length>100*1024*1024)throw Error('100MB 이하의 XD 파일을 선택해 주세요.');
@@ -40,5 +42,5 @@ self.onmessage=async event=>{
    self.postMessage({id,type,index,buffer:bytes.buffer,warnings},[bytes.buffer]);
    await py.runPythonAsync('native_result=None');
   }
- }catch(error){self.postMessage({id,type:'error',message:String(error.message||error).split('\n').filter(Boolean).slice(-3).join('\n')});}
+ }catch(error){self.postMessage({id,type:'error',code:phase,message:String(error.message||error).split('\n').filter(Boolean).slice(-3).join('\n')});}
 };

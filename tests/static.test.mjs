@@ -10,7 +10,7 @@ test('production build emits canonical sitemap and verification without private 
  assert.match(html,/<html lang="ko">/);assert.match(html,/rel="canonical" href="https:\/\/xd-bridge-test.example\//);assert.match(html,/google-site-verification/);
  const sitemap=await fs.readFile('dist/sitemap.xml','utf8');assert.match(sitemap,/https:\/\/xd-bridge-test.example\//);
  const robots=await fs.readFile('dist/robots.txt','utf8');assert.match(robots,/Allow: \//);assert.match(robots,/Sitemap:/);
- async function scan(dir){for(const file of await fs.readdir(dir,{withFileTypes:true})){const p=path.join(dir,file.name);if(file.isDirectory())await scan(p);else{assert.doesNotMatch(p,/\.xd$|\.figcraft$|browser-results|qa-browser/i);}}}
+ async function scan(dir){for(const file of await fs.readdir(dir,{withFileTypes:true})){const p=path.join(dir,file.name);if(file.isDirectory())await scan(p);else{assert.doesNotMatch(p,/\.xd$|\.figcraft$|\.pyc$|__pycache__|browser-results|qa-browser/i);}}}
  await scan('dist');
 });
 

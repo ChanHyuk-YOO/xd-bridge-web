@@ -1,0 +1,16 @@
+.support{display:grid;grid-template-columns:1fr 1.65fr;gap:45px;margin-top:55px;padding-top:40px;border-top:1px solid var(--line)}
+#language-select{max-width:170px;font-family:inherit;font-size:11px;padding:7px;border:1px solid #ccd7bf;border-radius:6px;background:#fcfdf9;color:var(--green)}
+.support-description,.support-hint,.diagnostic-choice p{font-size:11px;line-height:1.9;color:#7b8871}
+.diagnostic-choice{margin-top:25px;padding:17px;border:1px solid var(--line);border-radius:9px;background:#f0f4e9}
+.diagnostic-choice label,.contact-consent{font-size:11px;line-height:1.9;cursor:pointer}
+.diagnostic-choice input,.contact-consent input{accent-color:var(--green);vertical-align:middle;margin-right:6px}
+.contact-form{display:flex;flex-direction:column;align-items:flex-start;gap:9px;padding:24px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.contact-form>label:not(.contact-consent){font-size:12px;font-weight:600;margin-top:3px}
+.contact-form>input,.contact-form>textarea{width:100%;border:1px solid #ccd7bf;border-radius:6px;padding:10px 12px;background:#fcfdf9;font-family:inherit;font-size:12px;line-height:1.8;color:inherit}
+.contact-form>textarea{min-height:130px;resize:vertical;font-size:12px;font-family:inherit}
+.contact-form .support-hint{margin:0 0 5px;font-size:10px}
+.contact-form .contact-trap{display:none}
+#contact-status{margin:3px 0 0;font-size:11px;line-height:1.8;overflow-wrap:anywhere;color:#637651}
+.contact-form input:focus-visible,.contact-form textarea:focus-visible{outline:2px solid #628547;outline-offset:2px}
+@media(max-width:900px){.support{grid-template-columns:1fr;gap:5px}.diagnostic-choice{margin-top:15px}.contact-form{padding:20px}}
+@media(max-width:620px){#language-select{max-width:110px;font-size:10px}.site-header nav{gap:9px}.site-header nav>a:first-child{display:none}html:not([lang="ko"]) h1{font-size:30px;letter-spacing:-1px}}
