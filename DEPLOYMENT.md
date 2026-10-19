@@ -8,6 +8,7 @@
 - 검색 준비: 공개 canonical, robots.txt, sitemap.xml 응답 확인.
 - 인증 설정: Production 환경변수 GOOGLE_SITE_VERIFICATION. 인증 메타태그를 유지하기 위해 삭제하지 말 것.
 - Google Search Console: HTML 태그로 소유권 인증 완료. sitemap.xml 제출 성공, 발견된 페이지 1개 확인.
+- 수동 URL 색인 요청: Google 보안 확인(reCAPTCHA) 연결 오류로 접수 완료를 확인하지 못함. 현재 검색 색인은 아직 생성되지 않은 상태. 사이트맵은 성공적으로 접수되어 수집 대기 가능.
 - 로컬 XD 원본, 변환 결과, QA 자료, node_modules는 배포하지 않음.
 - 공개 주소에서 샘플 XD 미리보기와 .figcraft 다운로드를 확인. 업로드/POST 요청 없음.
 
