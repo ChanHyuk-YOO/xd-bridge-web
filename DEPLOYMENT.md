@@ -1,5 +1,15 @@
 # 운영 배포 기록
 
+## Netlify 이전 준비 (아직 전환 전)
+
+- 사용자가 상업용 운영이 가능한 Netlify Free로 이전 요청. 현재 Vercel 주소는 새 사이트 검증 전까지 유지.
+- `netlify.toml`: Node 22, `npm run build`, `dist`, 기존 보안 헤더 유지.
+- `netlify/functions/notify.mjs`: 기존 수신자 고정·동의·크기 제한·오류 정보 최소화 규칙을 재사용하며 `/api/notify` 제공. 클라이언트 IP는 Netlify context.ip만 신뢰.
+- 새 프로젝트 환경변수에 SITE_URL(새 운영 주소), RESEND_API_KEY, ALERT_EMAIL, NOTIFICATIONS_ENABLED 설정 필요. 키·수신 주소는 저장소/클라이언트에 넣지 않음. GOOGLE_SITE_VERIFICATION은 새 주소의 소유권 확인 때 적용.
+- Netlify의 URL 환경변수로 canonical·사이트맵 생성 가능. 운영 SITE_URL을 명시하는 것을 권장.
+- 계정 약관 동의와 GitHub 앱 저장소 권한 확인, 새 사이트 실제 배포 및 이메일 전달, Google 새 속성/사이트맵, 기존 URL 리디렉션은 아직 완료되지 않음.
+- Free 사용량 한도 내 운영. 유료 플랜, 도메인 구매, 자동 충전은 활성화하지 않음.
+
 - 공개 주소: https://xd-bridge-web.vercel.app
 - Vercel 프로젝트: https://vercel.com/chanhyuks-projects-f6d049fa/xd-bridge-web
 - 플랜: 개인 계정 Hobby. 유료 플랜/체험판/도메인 구매 없음.

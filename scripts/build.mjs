@@ -14,7 +14,7 @@ for(const file of ['LICENSE','README.md']){
  try{await fs.copyFile(path.join('node_modules/pyodide',file),path.join(dist,'runtime',file));}catch{}
 }
 await fs.copyFile('PYODIDE-LICENSE.txt',path.join(dist,'runtime','LICENSE'));
-const rawOrigin=process.env.SITE_URL||(process.env.VERCEL_PROJECT_PRODUCTION_URL?'https://'+process.env.VERCEL_PROJECT_PRODUCTION_URL:'');
+const rawOrigin=process.env.SITE_URL||process.env.URL||(process.env.VERCEL_PROJECT_PRODUCTION_URL?'https://'+process.env.VERCEL_PROJECT_PRODUCTION_URL:'');
 const origin=rawOrigin?new URL(rawOrigin).origin:'';
 const index=await fs.readFile(path.join(dist,'index.html'),'utf8');
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
@@ -28,4 +28,4 @@ const structuredMarkup=structuredData?'<script type="application/ld+json">'+JSON
 await fs.writeFile(path.join(dist,'index.html'),index.replace('<!-- DEPLOY_METADATA -->',metadata+structuredMarkup));
 await fs.writeFile(path.join(dist,'robots.txt'),'User-agent: *\nAllow: /\n'+(origin?'Sitemap: '+origin+'/sitemap.xml\n':''));
 await fs.writeFile(path.join(dist,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+(origin?'<url><loc>'+esc(origin)+'/</loc></url>':'')+'</urlset>');
-console.log('Built static browser converter. '+(origin?'SEO origin: '+origin:'Production origin will be set on Vercel.'));
+console.log('Built static browser converter. '+(origin?'SEO origin: '+origin:'Set SITE_URL for the production origin.'));
