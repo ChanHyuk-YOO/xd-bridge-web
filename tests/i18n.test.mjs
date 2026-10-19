@@ -27,7 +27,9 @@ test('translated counts and warnings preserve user content; unknown Korean error
  assert.equal(t('지원하지 않는 도형: ellipse'),'Unsupported shape: ellipse');
  assert.equal(t('고객 문서 이름'),'고객 문서 이름');
  assert.match(errorText('파이썬의 알려지지 않은 오류'),/Conversion failed/);
+ assert.equal(errorText('zipfile.BadZipFile: File is not a zip file'),'This XD file is invalid or damaged. Please save the original file again.');
  setLocale('ja');assert.equal(t('문의하기'),'お問い合わせ');
  setLocale('zh');assert.equal(t('문의하기'),'联系我们');
  setLocale('ko');assert.equal(t('문의하기'),'문의하기');
+ assert.match(errorText('zipfile.BadZipFile: File is not a zip file'),/손상되었습니다/);
 });

@@ -60,6 +60,7 @@ const rows = [
  ['선택한 파일은 브라우저의 Web Worker와 Python WebAssembly 런타임을 이용하여 처리합니다. 별도의 변환 서버, 파일 저장소, 광고 및 분석 추적 코드를 사용하지 않습니다. 페이지 접속과 정적 프로그램 다운로드에는 호스팅 제공자의 일반 네트워크 접속 기록이 남을 수 있습니다.','Selected files are processed in the browser using a Web Worker and Python WebAssembly. We use no conversion server, file storage or advertising/analytics trackers. The hosting provider may retain normal access logs for page visits and downloads.','ファイルはブラウザー内のWeb WorkerとPython WebAssemblyで処理します。変換サーバー、ファイル保存、広告・解析トラッカーは使用しません。ページの閲覧やダウンロードには通常のアクセス記録が残る場合があります。','所选文件使用浏览器中的 Web Worker 和 Python WebAssembly 处理，不使用转换服务器、文件存储或广告/分析跟踪代码。托管服务可能保留页面访问和程序下载的常规记录。'],
  ['레이어·글꼴·이미지·좌표를 가능한 범위에서 변환하지만 모든 XD 구조를 지원하지 않습니다. 결과를 검토하고 원본을 보관하세요. 실험적 FigCraft 직접 출력은 글꼴 메트릭을 근사하며 SVG를 FigCraft가 가져온 결과와 다를 수 있습니다.','We convert layers, fonts, images and coordinates where possible, but do not support every XD structure. Review results and keep the original. Experimental direct FigCraft export approximates font metrics and may differ from importing an SVG into FigCraft.','レイヤー・フォント・画像・座標を可能な範囲で変換しますが、すべてのXD構造には対応しません。結果を確認し元のファイルを保管してください。試験的なFigCraft出力は文字寸法を近似し、SVG読み込みの結果と異なる場合があります。','我们尽可能转换图层、字体、图像和坐标，但不支持所有 XD 结构。请检查结果并保留原文件。实验性 FigCraft 直接导出使用近似文字尺寸，可能与在 FigCraft 中导入 SVG 的结果不同。'],
  ['입력 디자인·글꼴·이미지에 대한 권리는 원저작자에게 있습니다. 이 사이트는 입력 디자인에 대한 권리를 부여하지 않습니다.','Rights to input designs, fonts and images belong to their owners. This site does not grant rights to input designs.','入力したデザイン・フォント・画像の権利は元の権利者に帰属します。このサイトは入力デザインの権利を付与しません。','输入设计、字体和图像的权利归原权利人所有，本站不授予输入设计的任何权利。'],['변환기 코드: MIT License. Python 브라우저 런타임:','Converter code: MIT License. Python browser runtime:','変換コード：MIT License。Pythonブラウザーランタイム：','转换器代码：MIT License。浏览器 Python 运行时：'],['(MPL-2.0, CPython 및 관련 구성요소는 각각의 라이선스 적용).','(MPL-2.0; CPython and related components have their own licenses).','（MPL-2.0。CPythonなどの構成要素には各ライセンスが適用されます）。','（MPL-2.0；CPython 及相关组件适用各自的许可证）。'],['배포 런타임 라이선스','Runtime licenses','ランタイムのライセンス','运行时许可证'],['Python 변환 엔진','Python conversion engine','Python変換エンジン','Python 转换引擎'],['FigCraft 직접 저장 모듈','Direct FigCraft export module','FigCraft直接出力モジュール','FigCraft 直接导出模块'],['MIT 라이선스','MIT license','MITライセンス','MIT 许可证'],
+ ['XD 파일 형식이 올바르지 않거나 손상되었습니다. 원본 파일을 다시 저장해 주세요.','This XD file is invalid or damaged. Please save the original file again.','XDファイルの形式が無効、または破損しています。元のファイルを保存し直してください。','XD 文件格式无效或已损坏，请重新保存原文件。'],
 ];
 export const translations = Object.fromEntries(rows.map(([ko, en, ja, zh]) => [ko, { ko, en, ja, zh }]));
 let preference = 'auto';
@@ -72,6 +73,8 @@ export function t(source, params = {}) {
   return text.replace(/\{(\w+)\}/g, (match, key) => Object.hasOwn(params, key) ? String(params[key]) : match);
 }
 export function errorText(message) {
+  if (/BadZipFile|File is not a zip file/i.test(message)) return t('XD 파일 형식이 올바르지 않거나 손상되었습니다. 원본 파일을 다시 저장해 주세요.');
+  if (/Traceback|PythonError|File "\/lib\//.test(message)) return t('변환 중 오류가 발생했습니다. 다른 파일로 시도하거나 문의해 주세요.');
   const text = t(message);
   return locale !== 'ko' && /[가-힣]/.test(text) ? t('변환 중 오류가 발생했습니다. 다른 파일로 시도하거나 문의해 주세요.') : text;
 }
