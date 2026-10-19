@@ -1,4 +1,8 @@
-# XD Bridge Web
+# XD Bridge — Free XD to SVG / FigCraft Converter
+
+**[무료 XD 변환기 사용하기 / Open the free XD converter](https://xd-bridge-web.vercel.app/)**
+
+Convert local Adobe XD (.xd) files to SVG or experimental native FigCraft (.figcraft) files in your browser. Preview artboards, export all SVGs as a ZIP, and review conversion warnings. No installation or login; design files stay on your device. Figma .fig export is not supported.
 
 비상업용 무료 XD → SVG / 실험적 FigCraft 변환 도구. 모든 파일 처리는 브라우저의 Web Worker + 자체 호스팅 Pyodide에서 수행합니다. 변환 API, 데이터베이스, 업로드 저장소, 외부 추적 스크립트가 없습니다.
 

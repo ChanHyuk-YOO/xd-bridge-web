@@ -8,6 +8,10 @@ test('production build emits canonical sitemap and verification without private 
  execFileSync(process.execPath,['scripts/build.mjs'],{env:{...process.env,SITE_URL:'https://xd-bridge-test.example',GOOGLE_SITE_VERIFICATION:'test-verification'}});
  const html=await fs.readFile('dist/index.html','utf8');
  assert.match(html,/<html lang="ko">/);assert.match(html,/rel="canonical" href="https:\/\/xd-bridge-test.example\//);assert.match(html,/google-site-verification/);
+ const structured=JSON.parse(html.match(/<script type="application\/ld\+json">([^]*?)<\/script>/)[1]);
+ for(const item of structured['@graph'])assert.equal(new URL(item.url).origin,'https://xd-bridge-test.example');
+ assert.equal(structured['@graph'].find(item=>item['@type']==='WebApplication').isAccessibleForFree,true);
+ assert.equal((html.match(/<h1\b/g)||[]).length,1);
  const sitemap=await fs.readFile('dist/sitemap.xml','utf8');assert.match(sitemap,/https:\/\/xd-bridge-test.example\//);
  const robots=await fs.readFile('dist/robots.txt','utf8');assert.match(robots,/Allow: \//);assert.match(robots,/Sitemap:/);
  async function scan(dir){for(const file of await fs.readdir(dir,{withFileTypes:true})){const p=path.join(dir,file.name);if(file.isDirectory())await scan(p);else{assert.doesNotMatch(p,/\.xd$|\.figcraft$|\.pyc$|__pycache__|browser-results|qa-browser/i);}}}

@@ -19,7 +19,13 @@ const origin=rawOrigin?new URL(rawOrigin).origin:'';
 const index=await fs.readFile(path.join(dist,'index.html'),'utf8');
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
 const metadata=(origin?`<link rel="canonical" href="${esc(origin)}/"><meta property="og:url" content="${esc(origin)}/">`:'')+(process.env.GOOGLE_SITE_VERIFICATION?`<meta name="google-site-verification" content="${esc(process.env.GOOGLE_SITE_VERIFICATION)}">`:'');
-await fs.writeFile(path.join(dist,'index.html'),index.replace('<!-- DEPLOY_METADATA -->',metadata));
+const description=index.match(/<meta name="description" content="([^"]+)"/)?.[1]||'';
+const structuredData=origin?{'@context':'https://schema.org','@graph':[
+ {'@type':'WebSite','@id':origin+'/#website',url:origin+'/',name:'XD Bridge',inLanguage:['ko','en','ja','zh']},
+ {'@type':'WebApplication','@id':origin+'/#converter',url:origin+'/',name:'XD Bridge',description,applicationCategory:'DesignApplication',operatingSystem:'Web browser',isAccessibleForFree:true,inLanguage:['ko','en','ja','zh'],browserRequirements:'JavaScript and WebAssembly required.',featureList:['XD to SVG conversion','Experimental XD to native FigCraft conversion','Artboard previews and SVG ZIP export','Browser-local design processing'],offers:{'@type':'Offer',price:'0',priceCurrency:'KRW'},isPartOf:{'@id':origin+'/#website'}},
+]}:null;
+const structuredMarkup=structuredData?'<script type="application/ld+json">'+JSON.stringify(structuredData).replaceAll('<','\\u003c')+'</script>':'';
+await fs.writeFile(path.join(dist,'index.html'),index.replace('<!-- DEPLOY_METADATA -->',metadata+structuredMarkup));
 await fs.writeFile(path.join(dist,'robots.txt'),'User-agent: *\nAllow: /\n'+(origin?'Sitemap: '+origin+'/sitemap.xml\n':''));
 await fs.writeFile(path.join(dist,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+(origin?'<url><loc>'+esc(origin)+'/</loc></url>':'')+'</urlset>');
 console.log('Built static browser converter. '+(origin?'SEO origin: '+origin:'Production origin will be set on Vercel.'));
