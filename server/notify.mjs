@@ -60,7 +60,9 @@ export function createHandler({ env = process.env, send = fetch, now = Date.now 
         subject = `[XD Bridge 오류] ${issues[body.code]}`;
         text = `오류 코드: ${body.code}\n발생 단계: ${issues[body.code]}\n브라우저: ${body.browser}\n접수일(UTC): ${date}\n\n동일 코드·브라우저 알림은 하루 한 번 전달됩니다.\n원본 오류 문구, 파일명, XD 내용, 사용자 식별자는 수집하지 않습니다.\n사이트: ${origin}/`;
         // Identical payload and key across instances, bounded to 30 types/day.
-        key = `error/${date}/${body.code}/${body.browser}`;
+        // Keep deduplication stable within a site, including during host moves.
+        const siteKey = createHash('sha256').update(origin).digest('hex').slice(0, 16);
+        key = `error/${siteKey}/${date}/${body.code}/${body.browser}`;
       } else {
         if (body.type !== 'contact') return json(res, 400, { error: '올바르지 않은 문의 유형입니다.' });
         if (body.website) return json(res, 200, { ok: true }); // Honeypot.

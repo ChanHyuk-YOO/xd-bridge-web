@@ -46,6 +46,10 @@ test('diagnostic payload contains only fixed labels; daily keys work across serv
   assert.deepEqual(calls[0].payload, calls[1].payload);
   assert.match(calls[0].payload.text, /analyze/);
   assert.doesNotMatch(JSON.stringify(calls[0].payload), /192\.0\.2\.1|stack|userAgent|input\.xd/);
+  const movedOrigin = 'https://xd-bridge-web.netlify.app';
+  await request(createHandler({ env: { ...env, SITE_URL: movedOrigin }, send, now: fixedNow }), body,
+    { headers: { origin: movedOrigin, 'content-type': 'application/json' } });
+  assert.notEqual(calls[0].options.headers['Idempotency-Key'], calls[2].options.headers['Idempotency-Key']);
 });
 test('body limits, honeypot, per-instance throttle and delivery failure are handled', async () => {
   calls.length = 0;
