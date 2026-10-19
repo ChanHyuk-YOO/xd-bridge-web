@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.vercel/
+.env*
+qa/
+qa-*.mjs
+__pycache__/

@@ -1,0 +1,10 @@
+node_modules
+dist
+qa
+qa-*.mjs
+__pycache__
+**/__pycache__
+*.xd
+*.figcraft
+.env*
+.git
